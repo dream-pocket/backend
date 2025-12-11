@@ -16,9 +16,10 @@ jobs:
       image: python:3.12-slim
 
     steps:
-      - &prepare_project
-        uses: actions/checkout@v4
-        name: Prepare project
+      - uses: actions/checkout@v4
+
+      - &install_deps
+        name: Install dependencies
         run: |
           pip install uv==${{ env.UV_VERSION }}
           uv sync
@@ -35,7 +36,8 @@ jobs:
       image: python:3.12-slim
 
     steps:
-      - *prepare_project
+      - uses: actions/checkout@v4
+      - *install_deps
 
       - name: Run tests
         run: uv run pytest
